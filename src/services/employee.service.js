@@ -1,12 +1,15 @@
 export class EmployeeService {
+  static DEPARTMENTS = ['Analytics', 'Tech'];
+  static POSITIONS = ['Junior', 'Medior', 'Senior'];
+
   constructor() {
     this.employees = [
       {
         id: 1,
         firstName: 'Umut',
         lastName: 'Erol',
-        dateOfEmployment: '19.03.1903',
-        dateOfBirth: '19.03.1903',
+        dateOfEmployment: '2023-03-19',
+        dateOfBirth: '1990-03-19',
         phone: '+90 532 123 45 67',
         email: 'umut@erol.org',
         department: 'Tech',

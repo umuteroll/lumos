@@ -79,8 +79,8 @@ export class EmployeeManagementApp extends LitElement {
   }
 
   _addEmployee() {
-    this.editingEmployee = null;
     this.showForm = true;
+    this.editingEmployee = null;
   }
 
   _editEmployee(e) {
@@ -113,7 +113,7 @@ export class EmployeeManagementApp extends LitElement {
         ${this.showForm ? html`
           <employee-form
             .employee=${this.editingEmployee}
-            .isEdit=${!!this.editingEmployee}
+            .isEdit=${this.editingEmployee?.id !== undefined}
             @employee-added=${this.handleEmployeeAdded}
             @employee-updated=${this.handleEmployeeUpdated}
             @form-cancelled=${this.handleFormCancelled}

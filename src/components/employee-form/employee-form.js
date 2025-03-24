@@ -1,9 +1,15 @@
 import { LitElement, html, css } from 'lit';
 import { mainStyles } from '../../styles/main-styles.js';
+import { EmployeeService } from '../../services/employee.service.js';
 
 export class EmployeeForm extends LitElement {
   static properties = {
-    employee: { type: Object },
+    employee: { 
+      type: Object,
+      hasChanged(newVal, oldVal) {
+        return newVal !== oldVal;
+      }
+    },
     isEdit: { type: Boolean }
   };
 
@@ -34,7 +40,7 @@ export class EmployeeForm extends LitElement {
         color: #666;
       }
 
-      input {
+      input, select {
         padding: 0.5rem;
         border: 1px solid #ddd;
         border-radius: 4px;
@@ -65,8 +71,79 @@ export class EmployeeForm extends LitElement {
     this.isEdit = false;
   }
 
+  formFields = [
+    {
+      id: 'firstName',
+      label: 'First Name',
+      type: 'text',
+      value: 'firstName'
+    },
+    {
+      id: 'lastName',
+      label: 'Last Name',
+      type: 'text',
+      value: 'lastName'
+    },
+    {
+      id: 'dateOfEmployment',
+      label: 'Date of Employment',
+      type: 'date',
+      value: 'dateOfEmployment'
+    },
+    {
+      id: 'dateOfBirth',
+      label: 'Date of Birth',
+      type: 'date',
+      value: 'dateOfBirth'
+    },
+    {
+      id: 'phone',
+      label: 'Phone',
+      type: 'tel',
+      value: 'phone'
+    },
+    {
+      id: 'email',
+      label: 'Email',
+      type: 'email',
+      value: 'email'
+    },
+    {
+      id: 'department',
+      label: 'Department',
+      type: 'select',
+      value: 'department',
+      options: EmployeeService.DEPARTMENTS
+    },
+    {
+      id: 'position',
+      label: 'Position',
+      type: 'select',
+      value: 'position',
+      options: EmployeeService.POSITIONS
+    }
+  ];
+
+  updated(changedProperties) {
+    if (changedProperties.has('employee')) {
+      if (this.employee === null) {
+        this.employee = {
+          firstName: '',
+          lastName: '',
+          dateOfEmployment: '',
+          dateOfBirth: '',
+          phone: '',
+          email: '',
+          department: '',
+          position: ''
+        };
+      }
+    }
+  }
+
   handleSubmit(e) {
     e.preventDefault();
+    
     const event = new CustomEvent(this.isEdit ? 'employee-updated' : 'employee-added', {
       detail: { employee: { ...this.employee } },
       bubbles: true,
@@ -82,92 +159,46 @@ export class EmployeeForm extends LitElement {
     };
   }
 
+  renderFormField(field) {
+    const value = this.employee?.[field.value] || '';
+    
+    if (field.type === 'select') {
+      return html`
+        <select
+          id=${field.id}
+          .value=${value}
+          @change=${(e) => this.handleInput(e, field.value)}
+        >
+          <option value="">Select ${field.label}</option>
+          ${field.options.map(option => html`
+            <option value=${option}>${option}</option>
+          `)}
+        </select>
+      `;
+    }
+
+    return html`
+      <input
+        type=${field.type}
+        id=${field.id}
+        .value=${value}
+        @input=${(e) => this.handleInput(e, field.value)}
+      />
+    `;
+  }
+
   render() {
     return html`
       <div class="form-container">
         <h2>${this.isEdit ? 'Edit Employee' : 'Add New Employee'}</h2>
         <form @submit=${this.handleSubmit}>
           <div class="form-grid">
-            <div class="form-field">
-              <label for="firstName">First Name</label>
-              <input
-                type="text"
-                id="firstName"
-                .value=${this.employee.firstName}
-                @input=${(e) => this.handleInput(e, 'firstName')}
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="lastName">Last Name</label>
-              <input
-                type="text"
-                id="lastName"
-                .value=${this.employee.lastName}
-                @input=${(e) => this.handleInput(e, 'lastName')}
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="dateOfEmployment">Date of Employment</label>
-              <input
-                type="date"
-                id="dateOfEmployment"
-                .value=${this.employee.dateOfEmployment}
-                @input=${(e) => this.handleInput(e, 'dateOfEmployment')}
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="dateOfBirth">Date of Birth</label>
-              <input
-                type="date"
-                id="dateOfBirth"
-                .value=${this.employee.dateOfBirth}
-                @input=${(e) => this.handleInput(e, 'dateOfBirth')}
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="phone">Phone</label>
-              <input
-                type="tel"
-                id="phone"
-                .value=${this.employee.phone}
-                @input=${(e) => this.handleInput(e, 'phone')}
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                .value=${this.employee.email}
-                @input=${(e) => this.handleInput(e, 'email')}
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="department">Department</label>
-              <input
-                type="text"
-                id="department"
-                .value=${this.employee.department}
-                @input=${(e) => this.handleInput(e, 'department')}
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="position">Position</label>
-              <input
-                type="text"
-                id="position"
-                .value=${this.employee.position}
-                @input=${(e) => this.handleInput(e, 'position')}
-                required
-              />
-            </div>
+            ${this.formFields.map(field => html`
+              <div class="form-field">
+                <label for=${field.id}>${field.label}</label>
+                ${this.renderFormField(field)}
+              </div>
+            `)}
           </div>
           <div class="form-actions">
             <button type="button" class="secondary" @click=${this._cancel}>

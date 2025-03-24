@@ -100,6 +100,15 @@ export const mainStyles = css`
     color: #333;
   }
 
+  button.danger {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  button.danger:hover {
+    background-color: #c82333;
+  }
+
   button:hover {
     opacity: 0.9;
   }

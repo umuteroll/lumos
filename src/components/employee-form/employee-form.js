@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { employeeFormStyles } from './employee-form.styles.js';
 import { EmployeeService } from '../../services/employee.service.js';
+import '../confirm-dialog/confirm-dialog.js';
 
 export class EmployeeForm extends LitElement {
   static properties = {
@@ -11,7 +12,8 @@ export class EmployeeForm extends LitElement {
       }
     },
     isEdit: { type: Boolean },
-    errors: { type: Object }
+    errors: { type: Object },
+    showConfirmDialog: { type: Boolean }
   };
 
   static styles = employeeFormStyles;
@@ -31,6 +33,7 @@ export class EmployeeForm extends LitElement {
     this.isEdit = false;
     this.errors = {};
     this.employeeService = new EmployeeService();
+    this.showConfirmDialog = false;
   }
 
   formFields = [
@@ -187,7 +190,15 @@ export class EmployeeForm extends LitElement {
       return;
     }
 
-    const event = new CustomEvent(this.isEdit ? 'employee-updated' : 'employee-added', {
+    if (this.isEdit) {
+      this.showConfirmDialog = true;
+    } else {
+      this._dispatchEmployeeEvent('employee-added');
+    }
+  }
+
+  _dispatchEmployeeEvent(eventName) {
+    const event = new CustomEvent(eventName, {
       detail: { employee: { ...this.employee } },
       bubbles: true,
       composed: true
@@ -281,6 +292,21 @@ export class EmployeeForm extends LitElement {
             </button>
           </div>
         </form>
+
+        <confirm-dialog
+          ?open=${this.showConfirmDialog}
+          title="Update Employee"
+          message=${`Are you sure you want to update ${this.employee.firstName} ${this.employee.lastName}'s information?`}
+          confirmText="Update"
+          cancelText="Cancel"
+          @dialog-confirmed=${() => {
+            this._dispatchEmployeeEvent('employee-updated');
+            this.showConfirmDialog = false;
+          }}
+          @dialog-cancelled=${() => {
+            this.showConfirmDialog = false;
+          }}
+        ></confirm-dialog>
       </div>
     `;
   }

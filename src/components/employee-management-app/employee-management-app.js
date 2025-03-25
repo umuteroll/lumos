@@ -3,6 +3,7 @@ import { EmployeeService } from '../../services/employee.service.js';
 import '../employee-table/employee-table.js';
 import '../employee-list/employee-list.js';
 import '../employee-form/employee-form.js';
+import '../confirm-dialog/confirm-dialog.js';
 
 export class EmployeeManagementApp extends LitElement {
   static properties = {
@@ -14,7 +15,9 @@ export class EmployeeManagementApp extends LitElement {
     editingEmployee: { type: Object },
     employees: { type: Array },
     totalPages: { type: Number },
-    selectedEmployees: { type: Array }
+    selectedEmployees: { type: Array },
+    showDeleteDialog: { type: Boolean },
+    employeeToDelete: { type: Object }
   };
 
   constructor() {
@@ -29,19 +32,19 @@ export class EmployeeManagementApp extends LitElement {
     this.employees = [];
     this.totalPages = 1;
     this.selectedEmployees = [];
+    this.showDeleteDialog = false;
+    this.employeeToDelete = null;
     this.loadEmployees();
   }
 
   loadEmployees() {
-    const { items, pagination } = this.employeeService.getEmployees({
+    const result = this.employeeService.getEmployees({
       searchQuery: this.searchQuery,
       page: this.currentPage,
       itemsPerPage: this.itemsPerPage
     });
-
-    this.employees = items;
-    this.totalPages = pagination.totalPages;
-    this.currentPage = pagination.currentPage;
+    this.employees = result.items;
+    this.totalPages = result.pagination.totalPages;
   }
 
   handleSearch(e) {
@@ -50,12 +53,8 @@ export class EmployeeManagementApp extends LitElement {
     this.loadEmployees();
   }
 
-  toggleView() {
-    this.viewMode = this.viewMode === 'table' ? 'list' : 'table';
-  }
-
-  changePage(newPage) {
-    this.currentPage = newPage;
+  handlePageChange(e) {
+    this.currentPage = e.detail.page;
     this.loadEmployees();
   }
 
@@ -87,27 +86,25 @@ export class EmployeeManagementApp extends LitElement {
     this.showForm = true;
   }
 
-  _deleteEmployee(e) {
-    if (confirm('Are you sure you want to delete this employee?')) {
-      this.employeeService.deleteEmployee(e.detail.employee.id);
+  _confirmDelete(e) {
+    this.employeeToDelete = e.detail.employee;
+    this.showDeleteDialog = true;
+  }
+
+  _handleDeleteConfirmed() {
+    if (this.employeeToDelete) {
+      this.employeeService.deleteEmployee(this.employeeToDelete.id);
       this.loadEmployees();
+      this.employeeToDelete = null;
     }
   }
 
-  handleSelectionChange(e) {
-    this.selectedEmployees = e.detail.selectedEmployees;
+  _handleDeleteCancelled() {
+    this.employeeToDelete = null;
   }
 
-  _deleteSelectedEmployees() {
-    if (this.selectedEmployees.length === 0) return;
-    
-    if (confirm(`Are you sure you want to delete ${this.selectedEmployees.length} selected employees?`)) {
-      this.selectedEmployees.forEach(employee => {
-        this.employeeService.deleteEmployee(employee.id);
-      });
-      this.selectedEmployees = [];
-      this.loadEmployees();
-    }
+  toggleView() {
+    this.viewMode = this.viewMode === 'table' ? 'list' : 'table';
   }
 
   render() {
@@ -129,11 +126,6 @@ export class EmployeeManagementApp extends LitElement {
                 ${this.viewMode === 'table' ? 'Switch to List View' : 'Switch to Table View'}
               </button>
               <button class="primary" @click=${this._addEmployee}>Add New</button>
-              ${this.selectedEmployees.length > 0 ? html`
-                <button class="danger" @click=${this._deleteSelectedEmployees}>
-                  Delete Selected (${this.selectedEmployees.length})
-                </button>
-              ` : ''}
             </div>
           </div>
 
@@ -146,42 +138,42 @@ export class EmployeeManagementApp extends LitElement {
             />
           </div>
 
-          ${this.viewMode === 'table'
-            ? html`
-                <employee-table
-                  .employees=${this.employees}
-                  .selectedEmployees=${this.selectedEmployees}
-                  @selection-change=${this.handleSelectionChange}
-                  @edit-employee=${this._editEmployee}
-                  @delete-employee=${this._deleteEmployee}
-                ></employee-table>
-              `
-            : html`
-                <employee-list
-                  .employees=${this.employees}
-                  @edit-employee=${this._editEmployee}
-                  @delete-employee=${this._deleteEmployee}
-                ></employee-list>
-              `}
-
-          <div class="pagination">
-            <button
-              class="secondary"
-              ?disabled=${this.currentPage === 1}
-              @click=${() => this.changePage(this.currentPage - 1)}
-            >
-              Previous
-            </button>
-            <span>Page ${this.currentPage} of ${this.totalPages}</span>
-            <button
-              class="secondary"
-              ?disabled=${this.currentPage === this.totalPages}
-              @click=${() => this.changePage(this.currentPage + 1)}
-            >
-              Next
-            </button>
-          </div>
+          ${this.viewMode === 'table' ? html`
+            <employee-table
+              .employees=${this.employees}
+              .selectedEmployees=${this.selectedEmployees}
+              @edit-employee=${this._editEmployee}
+              @delete-employee=${this._confirmDelete}
+              @selection-change=${this._handleSelectionChange}
+            ></employee-table>
+          ` : html`
+            <employee-list
+              .employees=${this.employees}
+              .selectedEmployees=${this.selectedEmployees}
+              @edit-employee=${this._editEmployee}
+              @delete-employee=${this._confirmDelete}
+              @selection-change=${this._handleSelectionChange}
+            ></employee-list>
+          `}
         `}
+
+        <confirm-dialog
+          ?open=${this.showDeleteDialog}
+          title="Delete Employee"
+          message=${this.employeeToDelete ? 
+            `Are you sure you want to delete ${this.employeeToDelete.firstName} ${this.employeeToDelete.lastName}?` : 
+            'Are you sure you want to delete this employee?'}
+          confirmText="Delete"
+          cancelText="Cancel"
+          @dialog-confirmed=${() => {
+            this._handleDeleteConfirmed();
+            this.showDeleteDialog = false;
+          }}
+          @dialog-cancelled=${() => {
+            this._handleDeleteCancelled();
+            this.showDeleteDialog = false;
+          }}
+        ></confirm-dialog>
       </div>
     `;
   }

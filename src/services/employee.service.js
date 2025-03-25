@@ -10,11 +10,33 @@ export class EmployeeService {
         lastName: 'Erol',
         dateOfEmployment: '2023-03-19',
         dateOfBirth: '1990-03-19',
-        phone: '+90 532 123 45 67',
+        phone: '05321234567',
         email: 'umut@erol.org',
         department: 'Tech',
         position: 'Senior'
-      }  
+      },
+      {
+        id: 2,
+        firstName: 'John',
+        lastName: 'Doe',
+        dateOfEmployment: '2024-01-01',
+        dateOfBirth: '1985-05-15',
+        phone: '05321234567',
+        email: 'john@doe.org',
+        department: 'Analytics',
+        position: 'Junior'
+      },
+      {
+        id: 3,
+        firstName: 'Jane',
+        lastName: 'Smith',
+        dateOfEmployment: '2024-02-15',
+        dateOfBirth: '1992-07-20',
+        phone: '05321234567',
+        email: 'jane@smith.org',
+        department: 'Tech',
+        position: 'Medior'
+      }
     ];
   }
 

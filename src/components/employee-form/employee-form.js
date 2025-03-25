@@ -235,9 +235,9 @@ export class EmployeeForm extends LitElement {
             class=${fieldErrors.length ? 'error' : ''}
             required=${field.required}
           >
-            <option value="">Select ${field.label}</option>
+            <option value="" ?selected=${!value}>Select ${field.label}</option>
             ${field.options.map(option => html`
-              <option value=${option}>${option}</option>
+              <option value=${option} ?selected=${option === value}>${option}</option>
             `)}
           </select>
           ${fieldErrors.map(error => html`

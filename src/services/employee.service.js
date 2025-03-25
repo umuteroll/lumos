@@ -50,6 +50,10 @@ export class EmployeeService {
     };
   }
 
+  isEmailTaken(email) {
+    return this.employees.some(emp => emp.email.toLowerCase() === email.toLowerCase());
+  }
+
   getEmployeeById(id) {
     return this.employees.find(emp => emp.id === id);
   }

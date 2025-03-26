@@ -27,7 +27,6 @@ export const employeeTableStyles = css`
     color: rgb(237, 108, 45);
     white-space: nowrap;
     font-size: 0.875rem;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 

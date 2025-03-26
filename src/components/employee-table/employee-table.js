@@ -59,10 +59,10 @@ export class EmployeeTable extends LitElement {
                 .checked=${this.selectedEmployees.length === this.employees.length}
               />
             </th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Date of Employment</th>
-            <th>Date of Birth</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Date of employment</th>
+            <th>Date of birth</th>
             <th>Phone</th>
             <th>Email</th>
             <th>Department</th>

@@ -1,5 +1,8 @@
 import { LitElement, html } from 'lit';
 import { employeeListStyles } from './employee-list.styles.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import editIcon from '../../assets/icons/edit.svg?raw';
+import deleteIcon from '../../assets/icons/delete.svg?raw';
 
 export class EmployeeList extends LitElement {
   static properties = {
@@ -60,21 +63,49 @@ export class EmployeeList extends LitElement {
                 <h3>${employee.firstName} ${employee.lastName}</h3>
               </div>
               <div class="action-buttons">
-                <button class="icon-button" @click=${() => this.handleEdit(employee)}>
-                  ✏️
+                <button 
+                  class="icon-button edit"
+                  @click=${() => this.handleEdit(employee)}
+                  title="Edit"
+                >
+                  ${unsafeSVG(editIcon)}
                 </button>
-                <button class="icon-button" @click=${() => this.handleDelete(employee)}>
-                  🗑️
+                <button 
+                  class="icon-button delete"
+                  @click=${() => this.handleDelete(employee)}
+                  title="Delete"
+                >
+                  ${unsafeSVG(deleteIcon)}
                 </button>
               </div>
             </div>
-            <div class="list-item-details">
-              <p><strong>Department:</strong> ${employee.department}</p>
-              <p><strong>Position:</strong> ${employee.position}</p>
-              <p><strong>Email:</strong> ${employee.email}</p>
-              <p><strong>Phone:</strong> ${employee.phone}</p>
-              <p><strong>Date of Employment:</strong> ${employee.dateOfEmployment}</p>
-              <p><strong>Date of Birth:</strong> ${employee.dateOfBirth}</p>
+            <div class="list-item-content">
+              <div class="list-item-details">
+                <div class="detail-group">
+                  <span class="detail-label">Department</span>
+                  <span class="detail-value">${employee.department}</span>
+                </div>
+                <div class="detail-group">
+                  <span class="detail-label">Position</span>
+                  <span class="detail-value">${employee.position}</span>
+                </div>
+                <div class="detail-group">
+                  <span class="detail-label">Email</span>
+                  <span class="detail-value">${employee.email}</span>
+                </div>
+                <div class="detail-group">
+                  <span class="detail-label">Phone</span>
+                  <span class="detail-value">${employee.phone}</span>
+                </div>
+                <div class="detail-group">
+                  <span class="detail-label">Date of Employment</span>
+                  <span class="detail-value">${employee.dateOfEmployment}</span>
+                </div>
+                <div class="detail-group">
+                  <span class="detail-label">Date of Birth</span>
+                  <span class="detail-value">${employee.dateOfBirth}</span>
+                </div>
+              </div>
             </div>
           </div>
         `)}

@@ -4,67 +4,118 @@ export const employeeListStyles = css`
   .list-view {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 16px;
+    padding: 16px;
   }
 
   .list-item {
-    padding: 1rem;
     background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    transition: box-shadow 0.2s ease;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.2s ease;
   }
 
   .list-item:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
   }
 
   .list-item-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f0f0;
   }
 
   .list-item-header h3 {
     margin: 0;
     color: #333;
-    font-size: 1.2rem;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .list-item-content {
+    padding: 20px;
   }
 
   .list-item-details {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
   }
 
-  .list-item-details p {
-    margin: 0;
+  .detail-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .detail-label {
     color: #666;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .detail-value {
+    color: #333;
+    font-size: 14px;
   }
 
   .action-buttons {
     display: flex;
-    gap: 0.5rem;
+    gap: 8px;
   }
 
   .icon-button {
-    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
     border: none;
-    padding: 0.25rem;
+    background: none;
     cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
     color: #666;
   }
 
+  .icon-button svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+  }
+
   .icon-button:hover {
-    color: #ff6b35;
+    background: rgba(237, 108, 45, 0.1);
+  }
+
+  .icon-button:hover svg {
+    transform: scale(1.1);
+  }
+
+  .icon-button.edit {
+    color: rgb(237, 108, 45);
+  }
+
+  .icon-button.edit:hover {
+    background: rgba(237, 108, 45, 0.1);
+  }
+
+  .icon-button.delete {
+    color: #dc3545;
+  }
+
+  .icon-button.delete:hover {
+    background: rgba(220, 53, 69, 0.1);
   }
 
   .checkbox-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 12px;
   }
 
   .checkbox {
@@ -72,5 +123,12 @@ export const employeeListStyles = css`
     height: 18px;
     border: 2px solid #ddd;
     border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .checkbox:checked {
+    background-color: rgb(237, 108, 45);
+    border-color: rgb(237, 108, 45);
   }
 `; 

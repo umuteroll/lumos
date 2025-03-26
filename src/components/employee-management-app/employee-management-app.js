@@ -4,6 +4,11 @@ import '../employee-table/employee-table.js';
 import '../employee-list/employee-list.js';
 import '../employee-form/employee-form.js';
 import '../confirm-dialog/confirm-dialog.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import addIcon from '../../assets/icons/add.svg?raw';
+import switchViewIcon from '../../assets/icons/switch-view.svg?raw';
+import searchIcon from '../../assets/icons/search.svg?raw';
+import { employeeManagementStyles } from './employee-management-app.styles.js';
 
 export class EmployeeManagementApp extends LitElement {
   static properties = {
@@ -19,6 +24,8 @@ export class EmployeeManagementApp extends LitElement {
     showDeleteDialog: { type: Boolean },
     employeeToDelete: { type: Object }
   };
+
+  static styles = employeeManagementStyles;
 
   constructor() {
     super();
@@ -121,21 +128,38 @@ export class EmployeeManagementApp extends LitElement {
         ` : html`
           <div class="header">
             <h1>Employee List</h1>
-            <div class="view-controls">
-              <button class="secondary" @click=${this.toggleView}>
-                ${this.viewMode === 'table' ? 'Switch to List View' : 'Switch to Table View'}
-              </button>
-              <button class="primary" @click=${this._addEmployee}>Add New</button>
+            <div class="header-content">
+              <div class="search-container">
+                <div class="search-icon">
+                  ${unsafeSVG(searchIcon)}
+                </div>
+                <input
+                  class="search-input"
+                  type="text"
+                  placeholder="Search employees..."
+                  .value=${this.searchQuery}
+                  @input=${this.handleSearch}
+                />
+              </div>
+              <div class="header-actions">
+                <div class="view-controls">
+                  <button 
+                    class="icon-button"
+                    @click=${this.toggleView}
+                    title="${this.viewMode === 'table' ? 'Switch to List View' : 'Switch to Table View'}"
+                  >
+                    ${unsafeSVG(switchViewIcon)}
+                  </button>
+                  <button 
+                    class="icon-button primary"
+                    @click=${this._addEmployee}
+                    title="Add New Employee"
+                  >
+                    ${unsafeSVG(addIcon)}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div class="search-bar">
-            <input
-              type="text"
-              placeholder="Search employees..."
-              .value=${this.searchQuery}
-              @input=${this.handleSearch}
-            />
           </div>
 
           ${this.viewMode === 'table' ? html`

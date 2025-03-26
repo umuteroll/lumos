@@ -90,12 +90,12 @@ export const employeeFormStyles = [
     }
 
     button.primary {
-      background: #007bff;
+      background: rgb(237, 108, 45);
       color: white;
     }
 
     button.primary:hover:not(:disabled) {
-      background: #0056b3;
+      background: rgb(220, 100, 40);
     }
 
     button.secondary {

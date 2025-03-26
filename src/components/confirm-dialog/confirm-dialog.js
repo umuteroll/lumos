@@ -32,7 +32,6 @@ export class ConfirmDialog extends LitElement {
             <button class="close-button" @click=${this._cancel}>×</button>
           </div>
           <div class="dialog-content">
-            <div class="warning-icon">⚠️</div>
             <p>${this.message}</p>
           </div>
           <div class="dialog-actions">

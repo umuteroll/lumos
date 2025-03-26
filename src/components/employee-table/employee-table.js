@@ -21,11 +21,7 @@ export class EmployeeTable extends LitElement {
     } else {
       this.selectedEmployees = [];
     }
-    this.dispatchEvent(new CustomEvent('selection-change', {
-      detail: { selectedEmployees: this.selectedEmployees },
-      bubbles: true,
-      composed: true
-    }));
+    this._dispatchSelectionChange();
   }
 
   toggleSelectEmployee(employee, e) {
@@ -34,6 +30,10 @@ export class EmployeeTable extends LitElement {
     } else {
       this.selectedEmployees = this.selectedEmployees.filter(emp => emp.id !== employee.id);
     }
+    this._dispatchSelectionChange();
+  }
+
+  _dispatchSelectionChange() {
     this.dispatchEvent(new CustomEvent('selection-change', {
       detail: { selectedEmployees: this.selectedEmployees },
       bubbles: true,
@@ -87,16 +87,22 @@ export class EmployeeTable extends LitElement {
               <td>
                 <div class="actions">
                   <button 
-                    class="edit-button"
+                    class="icon-button edit"
                     @click=${() => this.dispatchEvent(new CustomEvent('edit-employee', { detail: { employee } }))}
+                    title="Edit"
                   >
-                    ✏️
+                    <svg viewBox="0 0 24 24" width="16" height="16">
+                      <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.05c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                    </svg>
                   </button>
                   <button 
-                    class="delete-button"
+                    class="icon-button delete"
                     @click=${() => this.dispatchEvent(new CustomEvent('delete-employee', { detail: { employee } }))}
+                    title="Delete"
                   >
-                    🗑️
+                    <svg viewBox="0 0 24 24" width="16" height="16">
+                      <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                    </svg>
                   </button>
                 </div>
               </td>

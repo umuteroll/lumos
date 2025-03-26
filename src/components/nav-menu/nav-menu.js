@@ -10,9 +10,9 @@ export class NavMenu extends LitElement {
   static styles = navMenuStyles;
 
   static routes = [
-    { path: '/', label: 'Dashboard', icon: '📊' },
-    { path: '/employees', label: 'Employees', icon: '👥' },
-    { path: '/reports', label: 'Reports', icon: '📈' }
+    { path: '/', label: 'Dashboard', icon: '' },
+    { path: '/employees', label: 'Employees', icon: '' },
+    { path: '/reports', label: 'Reports', icon: '' }
   ];
 
   constructor() {

@@ -10,7 +10,7 @@ export class EmployeeService {
         lastName: 'Erol',
         dateOfEmployment: '2023-03-19',
         dateOfBirth: '1990-03-19',
-        phone: '05321234567',
+        phone: '5321234567',
         email: 'umut@erol.org',
         department: 'Tech',
         position: 'Senior'
@@ -21,7 +21,7 @@ export class EmployeeService {
         lastName: 'Doe',
         dateOfEmployment: '2024-01-01',
         dateOfBirth: '1985-05-15',
-        phone: '05321234567',
+        phone: '5321234567',
         email: 'john@doe.org',
         department: 'Analytics',
         position: 'Junior'
@@ -32,7 +32,51 @@ export class EmployeeService {
         lastName: 'Smith',
         dateOfEmployment: '2024-02-15',
         dateOfBirth: '1992-07-20',
-        phone: '05321234567',
+        phone: '5321234567',
+        email: 'jane@smith.org',
+        department: 'Tech',
+        position: 'Medior'
+      },
+      {
+        id: 4,
+        firstName: 'John',
+        lastName: 'Doe',
+        dateOfEmployment: '2024-01-01',
+        dateOfBirth: '1985-05-15',
+        phone: '5321234567',
+        email: 'john@doe.org',
+        department: 'Analytics',
+        position: 'Senior'
+      },
+      {
+        id: 5,
+        firstName: 'Jane',
+        lastName: 'Smith',
+        dateOfEmployment: '2024-02-15',
+        dateOfBirth: '1992-07-20',
+        phone: '5321234567',
+        email: 'jane@smith.org',
+        department: 'Tech',
+        position: 'Medior'
+      },
+      {
+        id: 6,
+        firstName: 'John',
+        lastName: 'Doe',
+        dateOfEmployment: '2024-01-01',
+        dateOfBirth: '1985-05-15',
+        phone: '5321234567',
+        email: 'john@doe.org',
+        department: 'Analytics',
+        position: 'Senior'
+      },
+      { 
+        id: 7,
+        firstName: 'Jane',
+        lastName: 'Smith',
+        dateOfEmployment: '2024-02-15',
+        dateOfBirth: '1992-07-20',
+        phone: '5321234567',
         email: 'jane@smith.org',
         department: 'Tech',
         position: 'Medior'

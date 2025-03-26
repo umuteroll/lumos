@@ -27,7 +27,6 @@ export class App extends LitElement {
   }
 
   firstUpdated() {
-    // Initialize router after the component is rendered
     const outlet = this.shadowRoot.querySelector('main');
     this.router = new Router(outlet);
     
@@ -46,12 +45,10 @@ export class App extends LitElement {
       }
     ]);
 
-    // Handle browser back/forward buttons
     window.addEventListener('popstate', () => {
       this.router.render(window.location.pathname);
     });
 
-    // Handle initial route
     this.router.render(window.location.pathname);
   }
 

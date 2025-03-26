@@ -36,6 +36,23 @@ export class EmployeeForm extends LitElement {
     this.showConfirmDialog = false;
   }
 
+  updated(changedProperties) {
+    if (changedProperties.has('employee')) {
+      if (this.employee === null) {
+        this.employee = {
+          firstName: '',
+          lastName: '',
+          dateOfEmployment: '',
+          dateOfBirth: '',
+          phone: '',
+          email: '',
+          department: '',
+          position: ''
+        };
+      }
+    }
+  }
+
   formFields = [
     {
       id: 'firstName',
@@ -296,7 +313,9 @@ export class EmployeeForm extends LitElement {
         <confirm-dialog
           ?open=${this.showConfirmDialog}
           title="Update Employee"
-          message=${`Are you sure you want to update ${this.employee.firstName} ${this.employee.lastName}'s information?`}
+          message=${this.employee ? 
+            `Are you sure you want to update ${this.employee.firstName} ${this.employee.lastName}'s information?` : 
+            'Are you sure you want to update this employee?'}
           confirmText="Update"
           cancelText="Cancel"
           @dialog-confirmed=${() => {

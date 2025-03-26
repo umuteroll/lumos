@@ -9,7 +9,9 @@ import deleteIcon from '../../assets/icons/delete.svg?raw';
 export class EmployeeTable extends LitElement {
   static properties = {
     employees: { type: Array },
-    selectedEmployees: { type: Array }
+    selectedEmployees: { type: Array },
+    currentPage: { type: Number },
+    itemsPerPage: { type: Number }
   };
 
   static styles = employeeTableStyles;
@@ -18,6 +20,30 @@ export class EmployeeTable extends LitElement {
     super();
     this.employees = [];
     this.selectedEmployees = [];
+    this.currentPage = 1;
+    this.itemsPerPage = 5;
+  }
+
+  get totalPages() {
+    return Math.ceil(this.employees.length / this.itemsPerPage);
+  }
+
+  get paginatedEmployees() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.employees.slice(start, end);
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
   }
 
   toggleSelectAll(e) {
@@ -71,7 +97,7 @@ export class EmployeeTable extends LitElement {
           </tr>
         </thead>
         <tbody>
-          ${this.employees.map(employee => html`
+          ${this.paginatedEmployees.map(employee => html`
             <tr>
               <td>
                 <input 
@@ -111,6 +137,25 @@ export class EmployeeTable extends LitElement {
           `)}
         </tbody>
       </table>
+      ${this.totalPages > 1 ? html`
+        <div class="pagination">
+          <button 
+            class="secondary"
+            ?disabled=${this.currentPage === 1}
+            @click=${this.previousPage}
+          >
+            Previous
+          </button>
+          <span>Page ${this.currentPage} of ${this.totalPages}</span>
+          <button 
+            class="secondary"
+            ?disabled=${this.currentPage === this.totalPages}
+            @click=${this.nextPage}
+          >
+            Next
+          </button>
+        </div>
+      ` : ''}
     `;
   }
 }

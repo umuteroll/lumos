@@ -1,5 +1,10 @@
 import { LitElement, html } from 'lit';
 import { employeeTableStyles } from './employee-table.styles.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+
+// SVG dosyalarını import et
+import editIcon from '../../assets/icons/edit.svg?raw';
+import deleteIcon from '../../assets/icons/delete.svg?raw';
 
 export class EmployeeTable extends LitElement {
   static properties = {
@@ -91,18 +96,14 @@ export class EmployeeTable extends LitElement {
                     @click=${() => this.dispatchEvent(new CustomEvent('edit-employee', { detail: { employee } }))}
                     title="Edit"
                   >
-                    <svg viewBox="0 0 24 24" width="16" height="16">
-                      <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.05c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                    </svg>
+                    ${unsafeSVG(editIcon)}
                   </button>
                   <button 
                     class="icon-button delete"
                     @click=${() => this.dispatchEvent(new CustomEvent('delete-employee', { detail: { employee } }))}
                     title="Delete"
                   >
-                    <svg viewBox="0 0 24 24" width="16" height="16">
-                      <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                    </svg>
+                    ${unsafeSVG(deleteIcon)}
                   </button>
                 </div>
               </td>
